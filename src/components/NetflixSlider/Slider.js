@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import cx from 'classnames';
 import SliderContext from './context'
 import Content from './Content'
-import SlideButton from './SlideButton'
 import SliderWrapper from './SliderWrapper'
 import useSliding from './useSliding'
 import useSizeElement from './useSizeElement'
@@ -12,12 +11,8 @@ const Slider = ({ children, activeSlide }) => {
   const [currentSlide, setCurrentSlide] = useState(activeSlide);
   const { width, elementRef } = useSizeElement();
   const {
-    handlePrev,
-    handleNext,
     slideProps,
     containerRef,
-    hasNext,
-    hasPrev
   } = useSliding(width, React.Children.count(children));
 
   const handleSelect = movie => {
@@ -25,6 +20,15 @@ const Slider = ({ children, activeSlide }) => {
   };
 
   const handleClose = () => {
+    setCurrentSlide(null);
+  };
+  const handleADD = () => {
+    console.log("testing close" + currentSlide.id);
+    //console.log("All movies" + JSON.stringify(children));
+    if (currentSlide.id in [1,2,3])
+    {
+      
+    } 
     setCurrentSlide(null);
   };
 
@@ -43,10 +47,8 @@ const Slider = ({ children, activeSlide }) => {
         >
           <div ref={containerRef} className="slider__container" {...slideProps}>{children}</div>
         </div>
-        {hasPrev && <SlideButton onClick={handlePrev} type="prev" />}
-        {hasNext && <SlideButton onClick={handleNext} type="next" />}
       </SliderWrapper>
-      {currentSlide && <Content movie={currentSlide} onClose={handleClose} />}
+      {currentSlide && <Content movie={currentSlide} onClose={handleClose} onADD={handleADD}/>}
     </SliderContext.Provider>
   );
 };
